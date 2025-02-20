@@ -3,11 +3,10 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
-
+      - main
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
