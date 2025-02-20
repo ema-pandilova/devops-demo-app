@@ -23,19 +23,25 @@ jobs:
           export_default_credentials: true
 
       - name: Configure Docker authentication for GCR
-        run: gcloud auth configure-docker gcr.io --quiet
+        run: gcloud auth configure-docker --quiet
 
       - name: Verify directory structure
-        run: ls -l && ls -l backend && ls -l frontend  
+        run: |
+          echo "Checking project directory..."
+          ls -la
+          echo "Checking backend directory..."
+          ls -la ./backend
+          echo "Checking frontend directory..."
+          ls -la ./frontend
 
       - name: Build and push Docker images
         run: |
           echo "Building backend image..."
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/emapandilova/devops-backend:latest backend
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/emapandilova/devops-backend:latest ./backend
           docker push gcr.io/${{ secrets.GCP_PROJECT }}/emapandilova/devops-backend:latest
 
           echo "Building frontend image..."
-          docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/emapandilova/devops-frontend:latest frontend
+          docker build -t gcr.io/${{ secrets.GCP_PROJECT }}/emapandilova/devops-frontend:latest ./frontend
           docker push gcr.io/${{ secrets.GCP_PROJECT }}/emapandilova/devops-frontend:latest
 
       - name: Get GKE credentials
